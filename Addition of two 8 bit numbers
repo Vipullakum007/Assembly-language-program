@@ -1,0 +1,13 @@
+Constraint: The numbers should be such that the result is limited to 8 bits.
+INPUT: (2000H) 10h , (2010H) 15h
+OUTPUT: (2020H) 
+
+Code:
+
+LDA 2000H ; 
+MOV B,A
+LDA 2010H
+ADD B
+STA 2020H
+HLT
+

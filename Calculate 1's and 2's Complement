@@ -1,0 +1,15 @@
+Write an assembly language program to 1’s complement and 2’s complement of a number.
+Input: (2000H) = 23H
+Output: (2010H) = DCH
+(2020H) = DDH
+
+Code : 
+
+LXI H,2000H
+MOV A,M
+CMA ; 1's complement of AC
+STA 2010H
+INR A ; 2's comp = 1s comp + 1
+;ADI 01H
+STA 2020H
+HLT

@@ -1,0 +1,32 @@
+Input : (2000h) 66h , (20001h) 52h , (2002h) 24h , (2003h) 29h
+Output : (2020h) 42h , (2030h) 66h , (2040h) 4Fh , (2040h) B0h
+
+Approch : 
+
+MVI A , 66H
+MVI B , 52H
+MVI C , 24H
+MVI D , 29H
+AND B ; AC <= AC AND B
+ORA C ; AC <= AC OR C
+XRA D ; AC <= AC XOR D
+CMP   ; AC <= COMP(AC)
+HLT
+
+Code :
+
+LXI H,2000H
+LXI D,2010H
+MOV A,M
+INX H
+ANA M
+STA 2010H
+INX H
+ORA M
+STA 2020H
+INX H
+XRA M
+STA 2030H
+CMA
+STA 2040H
+HLT

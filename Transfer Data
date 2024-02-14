@@ -1,0 +1,15 @@
+Write an Assembly language program to Move a block of 8 byte data stored from DF10H to
+DF17H to DF20H to DF27H.
+
+Code : 
+
+LXI H, DF10H ; adress from where you tranfer data
+LXI D, DF20H ; adress where you want to store data
+MVI B,8 ; counter
+LOOP: MOV A, M
+      STAX D
+      INX H
+      INX D
+      DCR B
+      JNZ LOOP
+HLT

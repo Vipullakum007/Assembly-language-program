@@ -1,0 +1,18 @@
+Write an Assembly language program to find whether the given number is even or odd. Store
+02H ( at 2010h )  if the number is even, otherwise 01H.
+
+input : (2000h) 19h
+output : (2010h) 01h
+
+LXI H,2000H
+MOV A,M
+RRC
+JC ODD
+MVI A,02H
+STA 2010H
+HLT
+;ODD LABEL
+ODD:MVI A,01H
+	STA 2010H
+HLT
+

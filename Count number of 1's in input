@@ -1,0 +1,16 @@
+Write an Assembly language program to Count number of 1's of the content of the register
+D and store the count in the register B. Input: D = 16H, Output: B = 03H
+
+Code : 
+
+MVI D,16H ; input
+MVI B,0   ; output
+MOV A,D
+MVI C,8   ; Counter for data bits in D
+LOOP:RRC
+	   JNC NOTPRESENT
+     INR B
+     NOTPRESENT:DCR C
+     JNZ LOOP
+     
+END: HLT

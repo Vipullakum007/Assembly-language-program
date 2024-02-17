@@ -1,0 +1,37 @@
+Write an Assembly language program to find the sum of a series of even numbers. Store the count at memory location 2000h , next 5 locations are the numbers. Store the result at the memory location 20  10H.
+Constraints : sum not exceeds 8 bits
+Approach : 
+
+Step 1 :
+loop iterate through all numbers
+
+Step 2 :
+
+Case 1 : if rotate right (RRC instruction) set carry bit then number is ODD
+Case 2 : other wise EVEN 
+
+Step 3:
+
+if case 2 happen then we need to restore our number so use RAL (for left shift)
+other wise direct jmp to LOOP
+
+Code : 
+
+LXI H,2000H
+MOV C,M; no of inputs
+LXI H,2001H ; input start from here
+LXI D,0 ;output
+
+LOOP:MOV A,M
+	   DCR C
+	   INX H
+     RRC ; chack odd or even
+     JZ END
+     JC LOOP ; odd then direct jump
+     RAL ; restore number
+     ADD D
+     MOV D,A
+     JMP LOOP
+
+END:STA 2010H
+	  HLT

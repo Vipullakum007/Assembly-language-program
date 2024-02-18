@@ -1,0 +1,34 @@
+Write an Assembly Language program to store 10 bytes starting from 2500H , subtract two consecutive bytes, if the result is negative store at memory location 2510H onwards.
+INPUT: 20, 10, 12, 18, 56, 42, 78, A0, 45, 31.
+OUTPUT: FA, D8
+
+Approach :
+• put loop iterate through all numbers & check every consucutive number subtraction 
+• using JM instruction if result is -ve then store , oterwise continue to iterate
+
+Dry Run : 
+iteration 1 : 20-10 = 10 => +ve
+iteration 2 : 12-18 = FA => -ve ( store result ) 
+iteration 3 : 56-42 = 14 => +ve
+iteration 4 : 78-A0 = D8 => -ve (store)
+iteration 5 : 45-31 = 14 => +ve
+
+Code:
+LXI H,2500H
+LXI B,2510H
+MVI E,05H ; counter
+LOOP:MOV A,M
+	   INR L
+     SUB M
+     JM NEGATIVE ; check if result is -ve or not
+     CONT:INR L
+     DCR E
+     JZ STOP
+     JMP LOOP
+     
+NEGATIVE:STAX B
+		     INR C
+         JMP CONT
+         
+STOP: HLT
+

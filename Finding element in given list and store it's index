@@ -1,0 +1,45 @@
+Write an Assembly Language program to search a given byte in the list. If the element is found then store the index/location of that element in the memory. If the element is not found then store FFFFH in the memory.
+
+INPUT Test Case 1: (8000H): 06H, Store the count of total numbers
+(8001H): 55H, The number to be searched
+(8002H to 8007H): 11H, 22H, 33H, 44H, 55H, 66H
+
+OUTPUT: (8010H): 80 (8011H): 06
+
+INPUT Test Case 2: (8000H): 06H, Store the count of total numbers
+(8001H): 77H, The number to be searched
+(8002H to 8007H): 11H, 22H, 33H, 44H, 55H, 66H
+
+OUTPUT: (8010H): FF (8011H): FF
+
+Approach : 
+• simply iterate through all numbers by loop
+• compare numbers with given/input number using CMP instruction & every time increment index(counter)
+• if found then store index , otherwise store FFh
+
+Code :
+LXI H,8000H
+MOV A,M
+MOV E,A ; iterator/loop counter
+LDA 8001H ; The number to be searched
+LXI H,8002H
+LXI B,8010H ; output
+
+LOOP:CMP M
+	   JZ STORE
+     DCR E
+     JZ NOTFOUND
+     INR L
+     JMP LOOP     
+     
+STORE:MOV A,H
+	    STAX B
+      INR C
+      MOV A,L
+      STAX B
+      HLT
+NOTFOUND:MVI A,FFH
+		     STAX B
+         INR C
+         STAX B
+         HLT

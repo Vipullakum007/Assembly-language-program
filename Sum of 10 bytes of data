@@ -1,0 +1,33 @@
+Write an Assembly Language program to sum 10 bytes of data, the sum may exceed 8 bits, store the lower byte of the sum at memory location 3000H and upper byte at 3010H.
+INPUT: E4, A0, FF, CD, A4, 16, F1, B2, 56, 67
+OUTPUT: (3000H): 06
+(3010H):6A
+
+Approach : simply add number by number if number exceeds 8 bit then keep track on how many time exceed in different bit .
+use JC insrtuction if carry generated ( carry flag = set ) => increment exceeds bit
+answer => total exceeds bit + content of accumlator
+
+Code : 
+
+MVI A,00H
+LXI B,3000H
+LXI H,3020H
+MVI E,10
+MVI D,00H ; exceeded bit
+LOOP:ADD M
+	   INR L
+     DCR E
+	   JC INCR ; check sum exceeds 8 bit or not 
+     JZ END
+	   JMP LOOP
+
+INCR:INR D
+	   JMP LOOP
+
+END:MOV E,A
+	  MOV A,D
+	  STAX B
+	  LXI B,3010H
+    MOV A,E
+    STAX B
+    HLT

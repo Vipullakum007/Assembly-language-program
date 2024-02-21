@@ -1,0 +1,80 @@
+Write an assembly language program in a 8085 microprocessor for the conversion of BCD
+to HEX or BCD to BINARY or DECIMAL to HEX or DECIMAL to BINARY.
+
+INPUT: (25)10
+OUTPUT: 19H
+
+NOTE : calculation done behind the scene is in binary & but in memory it is show us in hexadecimal
+
+Approsch : 
+
+Certainly! Here's a simplified explanation of the approach used in the assembly code for converting BCD to HEX:
+
+1 ) Initialization:
+Set up the memory address where the BCD number is stored.
+Load the first byte of the BCD number into the accumulator register.
+2 ) Extracting the Left 4 Bits: 
+Mask the lower 4 bits to get only the left 4 bits of the BCD number. => using AND with FOh
+Since the left 4 bits are in the most significant nibble but in unused form, shift them to the least significant nibble.
+3 ) Multiplying by 10:
+  Way 1 : Use a loop to multiply the left 4 bits by 10 (since each BCD digit is multiplied by 10 when converting to hexadecimal).
+  Way 2 : Wihtout loop
+4 ) Extracting the Right 4 Bits:
+  Move the accumulator to another register (D register) to preserve the left 4 bits.
+  Mask the original BCD number to get only the right 4 bits.
+5 ) Adding the Right 4 Bits:
+Add the right 4 bits to the previously multiplied left 4 bits.
+6 ) Storing the Result:
+Store the final result (the converted HEX value) in a specified memory address. HLT the program
+
+Dry Run : 
+
+25 => 0010 0101 
+extract left 4 bits : 25 & f0 => 20
+                      20>>4 => 2
+multiply with 10 : 2*10=20 => 0001 0100 (in bianry ) => 14(in memory because it is show us in hexadecimal)
+extract right 4 bits : 25 & 0f => 05
+add : multiplied bit + ectracted left 4 bits
+      14 + 05 = 19h => answer
+
+
+Code :
+
+lxi h,2000h
+;mvi h,25h
+
+mov a,m
+ani f0h; step 1 : fetch left 4 bits
+
+;step 2 : it is in unused form because we need only left 4 bits to multiply 10 
+;but we get 8 bits with 4 bits as most left 4 bits 
+;we need to convert into least left 4 bits
+;bring into used form right shift 4 times
+rrc
+rrc
+rrc
+rrc
+; step 3 : way -1 : multiply with 10 using reapeted addition using lopp
+mvi c,09h
+mov b,a
+loop:add b
+     dcr c
+     jnz loop
+
+way - 2 : repeated addition without loop 
+;add a
+;mov d,a
+;add a
+;add a
+;add d
+
+; step 4 : fetch right 4 bits
+mov d,a
+mov a,m
+ani 0fh
+
+; step 5 : add fetched right 4 bits to multipled bits
+add d
+sta 2010h
+mov d,a
+hlt

@@ -1,0 +1,33 @@
+Write an assembly language program in a 8085 microprocessor for the conversion of HEX to BCD.
+INPUT: (2000) - 34H
+OUTPUT: (2010) - 52H
+
+Reverse process of BCD to HEX
+Approach :
+=> get quotient & remainder using divide number by 10 [ using loop ]
+=> quotient in unused form make it used form shift 4 times left
+=> add remainder to shifted quotient
+
+Code : 
+lxi h , 2000h
+mov a ,m
+mvi d,00h
+; step 1 : get quotient
+loop:sbi 0Ah
+cpi 0Ah
+inr d 
+jnc loop
+
+mov l,a ; remainder
+
+mov a,d ; quotient
+;Step 2 : quotient in unused form make it used form shift 4 times left
+rlc
+rlc
+rlc
+rlc
+
+;Step 3: add remainder to shifted quotient
+add l
+sta 2010h
+hlt

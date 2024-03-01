@@ -1,0 +1,50 @@
+Write an 8085 assembly language program for HEX to ASCII conversion of a byte.
+
+Input: (4000H) = E4H
+Output: (4020H) = 34 (ASCII code for 4)
+(4021H) = 45 (ASCII code for E)
+
+Simple Approach : 
+extract and check both bits one by one , if it is ALPHABET or NUMBER . 
+if NUMBER ( condition : extracted bit < 0A ) : add 48
+else ALPHABET : sub 0A & add 65
+
+Code : 
+LXI H,4000H
+MOV A,M
+ANI 0FH ; extract last 4 bits
+
+CPI 0AH ; check byte is NUMBER or ALPHABET
+
+JNC ALPHABET
+
+NUMBER:ADI 48
+       JMP CONTINUE
+
+ALPHABET:SUI 0AH
+         ADI 65
+         JMP CONTINUE
+
+CONTINUE: STA 4020H
+
+MOV A,M
+ANI F0H ; extract first 4 bits
+
+RRC
+RRC
+RRC
+RRC
+
+CPI 0AH
+
+JNC ALPHABET2
+
+NUMBER2:ADI 48
+        JMP CONTINUE2
+
+ALPHABET2:SBI 0AH
+          ADI 65
+          JMP CONTINUE2
+
+CONTINUE2: STA 4021H
+HLT

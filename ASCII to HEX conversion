@@ -1,0 +1,23 @@
+Write an 8085 assembly language program for ASCII to HEX conversion of a byte.
+
+Input: (2000H) = 31
+Output: (2010H) = 01
+
+Simple Approach : 
+• compare input with 57 . 
+• NUMBER => input < 57 => subtract 48 => store result
+• ALPHABET => input > 57 => subtract 65 => store result
+
+Code : 
+
+LXI H,2000H
+MOV A,M
+CPI 57 ; check input is ALPHABET or NUMBER
+JNC ALPHABET
+NUMBER: SUI 48
+        JMP END
+        
+ALPHABET: SBI 65
+
+END: STA 2010H
+     HLT

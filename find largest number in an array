@@ -1,0 +1,32 @@
+Write an 8085 assembly language program to find the largest number in an array of data.
+Input :(2201H) = 08 (Array Size)
+(2202H) = 45
+(2203H) = 67
+(2204H) = 15
+(2205H) = 07
+(2206H) = FE
+(2207H) = 78
+(2208H) = 21
+(2209H) = 63
+Output: (220A) = FE
+
+Approach : 
+store 1st index as largest and then compare it with other and update if greater then it , otherwise not .
+Code : 
+LXI H,2201H
+MOV C,M ; array size
+INX H
+MOV A,M ; 1st index
+INX H
+DCR C
+LOOP:CMP M
+	   DCR C
+	   JC STOREMAX
+     INX H 
+     JZ END
+     JMP LOOP
+STOREMAX:MOV A,M
+		     INX H
+		     JMP LOOP
+END:STA 220AH
+HLT

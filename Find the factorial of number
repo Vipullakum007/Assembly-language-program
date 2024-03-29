@@ -1,0 +1,23 @@
+Write an 8085 assembly language program to find the factorial of a given number.
+Input:
+Output:
+Code:
+lda 0000h
+mov b,a
+loop1:mov e,a
+	  dcr b
+	  mov c,b
+      dcr c
+ 	  jz store
+loop2:add e
+	jc inc
+continue:dcr c
+	jnz loop2
+    
+jmp loop1
+
+inc: inr d
+jmp continue
+
+
+store:hlt
